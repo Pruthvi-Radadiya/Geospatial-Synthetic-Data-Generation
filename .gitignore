@@ -1,0 +1,26 @@
+# API keys and secrets
+*.env
+.env.*
+secrets.json
+
+# OS / editor
+.DS_Store
+Thumbs.db
+.vs/
+.idea/
+
+# Unity (if you ever add a full project here)
+[Ll]ibrary/
+[Tt]emp/
+[Oo]bj/
+[Bb]uild/
+[Bb]uilds/
+[Ll]ogs/
+[Uu]ser[Ss]ettings/
+*.csproj
+*.unityproj
+*.sln
+*.suo
+*.user
+*.pidb
+*.booproj
