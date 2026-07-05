@@ -33,8 +33,7 @@ Branch: `/main/using-cesium-map` · Location: Karlsruhe, Germany (~48.89°N, 8.6
 
 |Driving recording |
 |---|
-| <video src="docs/demo/cesium-driving.mp4" controls="controls" style="max-width: 100%;"></video> |
-<video src="https://github.com/Pruthvi-Radadiya/Geospatial-Synthetic-Data-Generation/raw/main/docs/demo/cesium-driving.mp4" controls="controls" style="max-width: 100%;"></video>
+| *`docs/demo/cesium-driving.mp4` or GIF* |
 
 Controls: **WASD** to drive · **C** to toggle chase / ego camera
 
