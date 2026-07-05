@@ -43,8 +43,8 @@ public class GPSTracker : MonoBehaviour
 
     void Update()
     {
-        // Read current GPS directly from Cesium's anchor
-        // Cesium handles the Earth geometry
+        // Read current GPS directly from Cesium's anchor — no Haversine math needed
+        // Cesium handles the Earth geometry for us
         var llh = _anchor.longitudeLatitudeHeight;
         currentLongitude = llh.x;
         currentLatitude  = llh.y;
