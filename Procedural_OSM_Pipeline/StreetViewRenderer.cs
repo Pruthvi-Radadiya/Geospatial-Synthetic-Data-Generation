@@ -27,7 +27,7 @@ public class StreetViewRenderer : MonoBehaviour
         TileFetcher.OnStreetViewReady -= BuildPhotoRing;
     }
 
-    // ── Main builder ─────────────────────────────────────────────────────────
+    //Main builder
     private void BuildPhotoRing(double lat, double lng, Dictionary<int, Texture2D> textures)
     {
         // Remove the previous tile's panels before building new ones
@@ -41,7 +41,7 @@ public class StreetViewRenderer : MonoBehaviour
 
         foreach (var kvp in textures)
         {
-            int heading = kvp.Key;       // 0, 45, 90 ... 315
+            int heading = kvp.Key;
             Texture2D tex = kvp.Value;
 
             CreatePanel(heading, tex);
@@ -51,7 +51,7 @@ public class StreetViewRenderer : MonoBehaviour
                   $"at {lat:F6}, {lng:F6}");
     }
 
-    // ── Panel builder ─────────────────────────────────────────────────────────
+    // Panel builder
     private void CreatePanel(int heading, Texture2D tex)
     {
         // 1. Create a Unity Quad (a flat rectangle, 1x1 by default)
@@ -83,16 +83,16 @@ public class StreetViewRenderer : MonoBehaviour
         mat.mainTexture = tex;
         renderer.material = mat;
 
-        // 6. Remove the collider — we don't want physics on photo panels
+        // 6. Remove the collider
         DestroyImmediate(panel.GetComponent<MeshCollider>());
 
         // Hide the panel from all cameras — it exists only as a texture source
         // The textures are already applied to buildings, we don't need to see the panels
-        panel.layer = LayerMask.NameToLayer("TransparentFX"); // invisible layer trick
+        panel.layer = LayerMask.NameToLayer("TransparentFX");
         renderer.enabled = false;
     }
 
-    // ── Scene view helper ─────────────────────────────────────────────────────
+    // Scene view helper
     // Draws the ring radius in the Scene view so you can see the layout
     void OnDrawGizmosSelected()
     {

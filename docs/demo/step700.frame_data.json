@@ -1,0 +1,160 @@
+{
+  "frame": 701,
+  "sequence": 0,
+  "step": 700,
+  "timestamp": 11.6199446,
+  "captures": [
+    {
+      "@type": "type.unity.com/unity.solo.RGBCamera",
+      "id": "camera",
+      "description": "",
+      "position": [
+        -0.2810133,
+        10.8145523,
+        -21.1930332
+      ],
+      "rotation": [
+        -1.36386291E-06,
+        0.0361633264,
+        4.70911523E-08,
+        0.9993459
+      ],
+      "velocity": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "acceleration": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "filename": "step700.camera.png",
+      "imageFormat": "Png",
+      "dimension": [
+        1920.0,
+        1080.0
+      ],
+      "projection": "Perspective",
+      "matrix": [
+        0.974278569,
+        0.0,
+        0.0,
+        0.0,
+        1.73205078,
+        0.0,
+        0.0,
+        0.0,
+        -1.00000119
+      ],
+      "annotations": [
+        {
+          "@type": "type.unity.com/unity.solo.SemanticSegmentationAnnotation",
+          "id": "semantic segmentation",
+          "sensorId": "camera",
+          "description": "Generates a semantic segmentation image for each captured frame. Each object is rendered to the semantic segmentation image using the color associated with it based on this labeler's associated semantic segmentation label configuration. Semantic segmentation images are saved to the dataset in PNG format. Please note that only one SemanticSegmentationLabeler can render at once across all cameras.",
+          "imageFormat": "Png",
+          "dimension": [
+            1920.0,
+            1080.0
+          ],
+          "filename": "step700.camera.semantic segmentation.png",
+          "instances": [
+            {
+              "labelName": "car",
+              "pixelValue": [
+                255,
+                26,
+                11,
+                255
+              ]
+            }
+          ]
+        },
+        {
+          "@type": "type.unity.com/unity.solo.BoundingBox3DAnnotation",
+          "id": "bounding box 3D",
+          "sensorId": "camera",
+          "description": "Produces 3D bounding box ground truth data for all visible objects that bear a label defined in this labeler's associated label configuration.",
+          "values": [
+            {
+              "instanceId": 1,
+              "labelId": 1,
+              "labelName": "car",
+              "translation": [
+                7.47348833,
+                -1.27014613,
+                25.73159
+              ],
+              "size": [
+                2.02881455,
+                1.43953085,
+                4.642813
+              ],
+              "rotation": [
+                1.22806853E-06,
+                -0.437591851,
+                -5.95136669E-07,
+                0.8991738
+              ],
+              "velocity": [
+                0.0,
+                0.0,
+                0.0
+              ],
+              "acceleration": [
+                0.0,
+                0.0,
+                0.0
+              ]
+            },
+            {
+              "instanceId": 2,
+              "labelId": 1,
+              "labelName": "car",
+              "translation": [
+                0.5548521,
+                -0.5149442,
+                47.0912781
+              ],
+              "size": [
+                2.021656,
+                1.52805281,
+                4.966088
+              ],
+              "rotation": [
+                1.36386291E-06,
+                -0.0361633264,
+                -4.70911523E-08,
+                0.9993459
+              ],
+              "velocity": [
+                0.0,
+                0.0,
+                0.0
+              ],
+              "acceleration": [
+                0.0,
+                0.0,
+                0.0
+              ]
+            }
+          ]
+        },
+        {
+          "@type": "type.unity.com/unity.solo.DepthAnnotation",
+          "id": "Depth",
+          "sensorId": "camera",
+          "description": "Generates a 32-bit depth image in EXR format where each pixel contains the actual distance in Unity units (usually meters) from the camera to the object in the scene.",
+          "measurementStrategy": "Depth",
+          "imageFormat": "Exr",
+          "dimension": [
+            1920.0,
+            1080.0
+          ],
+          "filename": "step700.camera.Depth.exr"
+        }
+      ]
+    }
+  ]
+}

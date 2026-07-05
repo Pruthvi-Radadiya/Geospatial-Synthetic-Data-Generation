@@ -12,11 +12,11 @@ public class GPSTracker : MonoBehaviour
     [Header("Tile Settings")]
     public float tileSizeMetres = 50f;
 
-    // Current GPS — read by TileFetcher and other scripts
+    // Current GPS - read by TileFetcher and other scripts
     [HideInInspector] public double currentLatitude;
     [HideInInspector] public double currentLongitude;
 
-    // Fired every 50m — TileFetcher listens to this
+    // Fired every 50m - TileFetcher listens to this
     public static event Action<double, double> OnNewTileEntered;
 
     private CesiumGlobeAnchor _anchor;
@@ -43,7 +43,7 @@ public class GPSTracker : MonoBehaviour
 
     void Update()
     {
-        // Read current GPS directly from Cesium's anchor — no Haversine math needed
+        // Read current GPS directly from Cesium's anchor - no Haversine math needed
         // Cesium handles the Earth geometry for us
         var llh = _anchor.longitudeLatitudeHeight;
         currentLongitude = llh.x;

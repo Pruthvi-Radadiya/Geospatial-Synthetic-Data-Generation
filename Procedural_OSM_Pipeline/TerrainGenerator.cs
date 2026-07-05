@@ -25,7 +25,6 @@ public class TerrainGenerator : MonoBehaviour
     [Tooltip("Re-fetch elevation when agent moves this far from last fetch centre")]
     public float refetchDistance = 90f;
 
-    // Internal state
     private Mesh   _mesh;
     private float  _baseElevation;
     private bool   _baseSet      = false;
@@ -37,7 +36,6 @@ public class TerrainGenerator : MonoBehaviour
 
     public static event Action<double, double> OnTerrainRebuilt;
 
-    // Unity lifecycle
     void Awake()
 
     {

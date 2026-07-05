@@ -427,11 +427,9 @@ public class RoadDrivingProxy : MonoBehaviour
         return _gps != null ? _gps.initialHeight : 400.0;
     }
 
-    /// <summary>
     /// Live vehicle/agent ground probe: fires from a short window above <paramref name="samplePos"/>.
     /// Used for vehicle ground detection and Cesium-collider-ready checks.
     /// Kept independent with small windows so false hits from distant terrain are avoided.
-    /// </summary>
     private bool TryGetRoadSurfaceHit(Vector3 samplePos, Vector3 localUp, out RaycastHit bestHit)
     {
         bestHit = default;

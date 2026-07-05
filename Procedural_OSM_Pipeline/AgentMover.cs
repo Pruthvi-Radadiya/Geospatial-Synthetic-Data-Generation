@@ -6,7 +6,6 @@ public class AgentMover : MonoBehaviour
     public float speed = 10f; // metres per second
     public float heightOffset = 1.5f;
     
-    // Update is called once per frame
     void Update()
     {
         float h = 0f;

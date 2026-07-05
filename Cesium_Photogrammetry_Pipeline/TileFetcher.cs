@@ -14,14 +14,14 @@ public class TileFetcher : MonoBehaviour
     [Tooltip("Resolution of each Street View photo fetched")]
     public int imageSize = 640;
 
-    [Tooltip("Field of view in degrees per photo — 90 gives good overlap at 8 directions")]
+    [Tooltip("Field of view in degrees per photo - 90 gives good overlap at 8 directions")]
     public int fov = 90;
 
     // Fired when all 8 Street View images for a tile arrive
     // Dictionary key = heading in degrees (0, 45, 90 ... 315)
     public static event Action<double, double, Dictionary<int, Texture2D>> OnStreetViewReady;
 
-    // Fired with a full grid of heights — TerrainGenerator uses this
+    // Fired with a full grid of heights - TerrainGenerator uses this
     // float[,] is a 2D array of heights in metres, rows = Z axis, cols = X axis
     public static event Action<double, double, float[,]> OnElevationGridReady;
 
@@ -32,7 +32,7 @@ public class TileFetcher : MonoBehaviour
     private Queue<(double lat, double lng)> _fetchQueue = new Queue<(double, double)>();
     private bool _isFetching = false;
 
-    // The 8 compass headings we fetch — covers full 360°
+    // The 8 compass headings we fetch - covers full 360°
     private readonly int[] _headings = { 0, 45, 90, 135, 180, 225, 270, 315 };
 
     void OnEnable()
@@ -47,7 +47,7 @@ public class TileFetcher : MonoBehaviour
         GPSTracker.OnNewTileEntered -= QueueTileFetch;
     }
 
-    // ── Queue system ─────────────────────────────────────────────────────────
+    // Queue system
     // Called by GPSTracker every time agent enters a new tile
     private void QueueTileFetch(double lat, double lng)
     {
@@ -71,16 +71,16 @@ public class TileFetcher : MonoBehaviour
         _isFetching = false;
     }
 
-    // ── Main fetch coroutine ─────────────────────────────────────────────────
+    // Main fetch coroutine
     // Runs elevation + all 8 Street View fetches for one tile
     private IEnumerator FetchTileData(double lat, double lng)
     {
         Debug.Log($"[TileFetcher] Starting fetch for {lat:F6}, {lng:F6}");
 
-        // --- 1. Fetch elevation first (lightweight JSON call) ----------------
+        // 1. Fetch elevation first (lightweight JSON call)
         yield return StartCoroutine(FetchElevation(lat, lng));
 
-        // --- 2. Fetch all 8 Street View directions --------------------------
+        // 2. Fetch all 8 Street View directions
         var textures = new Dictionary<int, Texture2D>();
 
         foreach (int heading in _headings)
@@ -88,7 +88,7 @@ public class TileFetcher : MonoBehaviour
             yield return StartCoroutine(FetchStreetViewImage(lat, lng, heading, textures));
         }
 
-        // --- 3. Fire the event so other scripts can use the textures --------
+        // 3. Fire the event so other scripts can use the textures
         if (textures.Count > 0)
         {
             Debug.Log($"[TileFetcher] Got {textures.Count}/8 Street View images for {lat:F6}, {lng:F6}");
@@ -100,7 +100,7 @@ public class TileFetcher : MonoBehaviour
         }
     }
 
-    // ── Elevation API (grid version) ─────────────────────────────────────────
+    // Elevation API (grid version)
     [Header("Elevation Grid Settings")]
     [Tooltip("How many samples per side of the grid — 9 gives an 81-point grid")]
     public int elevationGridSize = 9;
@@ -140,7 +140,7 @@ public class TileFetcher : MonoBehaviour
             }
         }
 
-        // Join all points into one API call — much cheaper than 81 separate calls
+        // Join all points into one API call - much cheaper than 81 separate calls
         string locationsParam = string.Join("|", locations);
         string url = $"https://maps.googleapis.com/maps/api/elevation/json" +
                     $"?locations={locationsParam}&key={apiKey}";
@@ -198,7 +198,7 @@ public class TileFetcher : MonoBehaviour
         return grid;
     }
 
-    // ── Street View API ──────────────────────────────────────────────────────
+    // Street View API
     // Fetches one photo at a given heading and adds it to the dictionary
     private IEnumerator FetchStreetViewImage(
         double lat, double lng, int heading, Dictionary<int, Texture2D> results)
@@ -231,7 +231,7 @@ public class TileFetcher : MonoBehaviour
             Debug.LogWarning($"[TileFetcher] No Street View coverage at heading {heading}");
     }
 
-    // ── Helpers ──────────────────────────────────────────────────────────────
+    // Helpers
 
     // Pulls the elevation value out of the Google Elevation JSON response
     // Example response: {"results":[{"elevation":35.12345,"location":{...}}],"status":"OK"}
@@ -253,7 +253,7 @@ public class TileFetcher : MonoBehaviour
     }
 
     // Google returns a 640x640 grey placeholder when no Street View exists
-    // We sample a few pixels — if they're all near the same grey, it's the placeholder
+    // We sample a few pixels - if they're all near the same grey, it's the placeholder
     private bool IsGreyNoImageryResponse(Texture2D tex)
     {
         // Sample 5 pixels spread across the image

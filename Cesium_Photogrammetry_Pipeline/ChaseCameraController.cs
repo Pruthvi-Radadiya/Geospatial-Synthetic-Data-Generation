@@ -1,12 +1,10 @@
 using UnityEngine;
 using UnityEngine.InputSystem;
 
-/// <summary>
 /// Controls the chase camera for driving visualization.
-/// Attach this script to the ChaseCamera GameObject (child of the vehicle).
-/// It keeps the camera as a rigid child of the vehicle to prevent coordinates mismatch
+/// ChaseCamera GameObject- child of the vehicle.
 /// on the Cesium globe, and toggles displaying it in the Game view when 'C' is pressed.
-/// </summary>
+
 [RequireComponent(typeof(Camera))]
 public class ChaseCameraController : MonoBehaviour
 {
@@ -25,10 +23,8 @@ public class ChaseCameraController : MonoBehaviour
     {
         _camera = GetComponent<Camera>();
 
-        // Auto-detect the vehicle as the parent
         _vehicleTransform = transform.parent;
 
-        // Auto-detect the EgoCameraController from the vehicle's EgoCam child
         if (egoCameraController == null && _vehicleTransform != null)
         {
             Transform egoCamTransform = _vehicleTransform.Find("EgoCam");
@@ -39,8 +35,8 @@ public class ChaseCameraController : MonoBehaviour
         }
 
         // Configure camera explicitly for Display 0 (Game view)
-        _camera.targetDisplay = 0;      // Explicitly render to Game view
-        _camera.targetTexture = null;    // Render to screen
+        _camera.targetDisplay = 0;
+        _camera.targetTexture = null;
 
         ApplyChaseCameraState();
         Debug.Log("[ChaseCameraController] Initialized rigidly as a child of the vehicle.");
@@ -51,7 +47,6 @@ public class ChaseCameraController : MonoBehaviour
         // Apply initial ego camera state to match chase cam being active
         ApplyEgoCameraState();
 
-        // Diagnostic camera lookup
         Camera[] cameras = FindObjectsByType<Camera>(FindObjectsSortMode.None);
         foreach (var c in cameras)
         {
@@ -80,7 +75,7 @@ public class ChaseCameraController : MonoBehaviour
 
         if (_isActive)
         {
-            _camera.targetTexture = null; // Render to screen
+            _camera.targetTexture = null;
             _camera.targetDisplay = 0;
             _camera.depth = 10;
             
@@ -105,24 +100,18 @@ public class ChaseCameraController : MonoBehaviour
 
         if (_isActive)
         {
-            // Chase cam is active → ego cam goes back to data-capture-only mode (Display 1)
+            // Chase cam is active -> ego cam goes back to data-capture-only mode (Display 1)
             egoCameraController.HideFromScreen();
         }
         else
         {
-            // Chase cam is disabled → ego cam takes over the Game view (Display 0)
+            // Chase cam is disabled -> ego cam takes over the Game view (Display 0)
             egoCameraController.ShowOnScreen();
         }
     }
 
-    /// <summary>
-    /// Returns whether the chase camera is currently the active view.
-    /// </summary>
     public bool IsActive => _isActive;
 
-    /// <summary>
-    /// Programmatically enable or disable the chase camera.
-    /// </summary>
     public void SetActive(bool active)
     {
         _isActive = active;

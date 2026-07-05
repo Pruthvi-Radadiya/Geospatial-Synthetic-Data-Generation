@@ -2,19 +2,18 @@ using System;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Rendering;
-using UnityEngine.Rendering.HighDefinition; // Needed to duplicate HDRP settings
-using UnityEngine.Perception.GroundTruth; // Required to control the PerceptionCamera visualization HUD
+using UnityEngine.Rendering.HighDefinition;
+using UnityEngine.Perception.GroundTruth;
 
-/// <summary>
 /// Controls the ego (first-person) camera used for autonomous driving data capture.
 /// This is a SENSOR camera — it always renders so Unity Perception can capture dataset frames.
 ///
-/// Attach this script to the EgoCam GameObject (child of the vehicle, positioned at driver seat).
+/// EgoCam GameObject - child of the vehicle, positioned at driver seat.
 /// 
 /// Two modes of operation:
 ///   1. Hidden (default when chase cam is active): the main capture camera renders to a background RenderTexture.
 ///   2. On-screen: a dynamically created visual camera clone (EgoCam_ScreenView) is enabled to draw on Display 0.
-/// </summary>
+
 [DefaultExecutionOrder(-100)]
 [RequireComponent(typeof(Camera))]
 public class EgoCameraController : MonoBehaviour
@@ -31,23 +30,20 @@ public class EgoCameraController : MonoBehaviour
     private RenderTexture _egoRenderTexture;
     private Camera _egoViewCamera;
 
-    /// <summary>
     /// Direct access to the ego camera component.
-    /// </summary>
     public Camera EgoCamera => _egoCamera;
 
     void Awake()
     {
         _egoCamera = GetComponent<Camera>();
 
-        // Create the RenderTexture for background capture using HDRP-compatible DefaultHDR format
         _egoRenderTexture = new RenderTexture(captureResolution.x, captureResolution.y, 24, RenderTextureFormat.DefaultHDR);
         _egoRenderTexture.name = "EgoCam_CaptureTexture";
         _egoRenderTexture.Create();
 
         // Assign RenderTexture to the main capture camera permanently
         _egoCamera.targetTexture = _egoRenderTexture;
-        _egoCamera.targetDisplay = 1; // Redirect blits/visualizations to Display 2 (index 1) to prevent drawing on Display 1
+        _egoCamera.targetDisplay = 1; // Redirect blits/visualizations to Display 2 (index=1) to prevent drawing on Display 1
         _egoCamera.depth = 0;
         _egoCamera.enabled = true;
         gameObject.tag = "Untagged";
@@ -75,7 +71,7 @@ public class EgoCameraController : MonoBehaviour
         _egoViewCamera.targetTexture = null;
         _egoViewCamera.targetDisplay = 0;
         _egoViewCamera.depth = 15;
-        _egoViewCamera.enabled = false; // Disabled by default
+        _egoViewCamera.enabled = false;
         viewObj.tag = "Untagged";
 
         // Duplicate HDRP camera data
@@ -273,10 +269,8 @@ public class EgoCameraController : MonoBehaviour
         }
     }
 
-    /// <summary>
     /// Called by ChaseCameraController when chase cam is toggled OFF.
     /// Redirects the ego camera's output directly to the screen (Display 0).
-    /// </summary>
     public void ShowOnScreen()
     {
         if (_egoViewCamera == null) return;
@@ -289,10 +283,8 @@ public class EgoCameraController : MonoBehaviour
         Debug.Log("[EgoCameraController] ShowOnScreen: Ego screen-view camera enabled.");
     }
 
-    /// <summary>
     /// Called by ChaseCameraController when chase cam is toggled ON.
     /// Redirects the ego camera's output back to the RenderTexture.
-    /// </summary>
     public void HideFromScreen()
     {
         if (_egoViewCamera == null) return;
@@ -305,8 +297,6 @@ public class EgoCameraController : MonoBehaviour
         Debug.Log("[EgoCameraController] HideFromScreen: Ego screen-view camera disabled.");
     }
 
-    /// <summary>
     /// Returns whether the ego camera is currently visible in the Game view.
-    /// </summary>
     public bool IsShowingOnScreen => _isShowingOnScreen;
 }

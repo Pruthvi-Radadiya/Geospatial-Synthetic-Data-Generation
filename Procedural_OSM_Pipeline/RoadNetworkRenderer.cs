@@ -172,10 +172,10 @@ public class RoadNetworkRenderer : MonoBehaviour
             Vector3 perp = new Vector3(dir.z, 0, -dir.x) * halfW;
 
             int v = verts.Count;
-            verts.Add(p1 - perp);   // left  near
-            verts.Add(p1 + perp);   // right near
-            verts.Add(p2 - perp);   // left  far
-            verts.Add(p2 + perp);   // right far
+            verts.Add(p1 - perp);
+            verts.Add(p1 + perp);
+            verts.Add(p2 - perp);
+            verts.Add(p2 + perp);
 
             tris.AddRange(new[] { v, v+2, v+1,   v+1, v+2, v+3 });
 

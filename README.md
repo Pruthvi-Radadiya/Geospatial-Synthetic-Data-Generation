@@ -1,120 +1,146 @@
 # Geospatial Synthetic Data Generation
 
-Portfolio project demonstrating **geospatial data ingestion, tiling, and transformation** into simulation-ready 3D environments. Two complementary pipelines show how raw map and imagery sources can be preprocessed at runtime and converted into structured geometry anchored to real-world coordinates.
+An independent project exploring how **real-world geospatial data** can be ingested, tiled, and transformed into **simulation-ready 3D environments** in Unity — with a longer-term goal of generating and validating **multi-sensor synthetic datasets** for autonomous driving research.
 
-1. **Procedural OSM Pipeline** - ingests elevation rasters, street-level imagery, and OSM vector data; tiles and transforms them into terrain, buildings, and road meshes.
-2. **Cesium Photogrammetry Pipeline** - streams photorealistic 3D Tiles, fuses OSM road vectors onto terrain via height raycasting, and captures structured camera output for synthetic datasets.
+Two complementary pipelines are implemented as separate development branches:
 
-> **Scripts-only repo:** This GitHub repository contains **Unity C# scripts + demo media only**. The full Unity project (scenes, HDRP assets, Cesium tileset wiring, Perception labelers) stays in local Unity Version Control / Plastic SCM. That is intentional - Unity projects are large, scene files serialize Inspector values (including API keys), and recruiters care most about pipeline logic.
+1. **Procedural OSM Pipeline** - builds terrain, buildings, and roads at runtime from Google Elevation, Street View, and OpenStreetMap vector data.
+2. **Cesium Photogrammetry Pipeline** - streams photorealistic 3D Tiles, fuses OSM road geometry onto terrain via height raycasting, and supports ego-camera capture for synthetic sensor output.
 
-**Full project (local):** `RealSceneGen` in Unity 6 + Plastic SCM  
-**Portfolio repo (public):** https://github.com/Pruthvi-Radadiya/Geospatial-Synthetic-Data-Generation
-
-### Unity Version Control branches (local `RealSceneGen`)
-
-| Plastic SCM branch | Pipeline | Scripts folder in this repo |
-|---|---|---|
-| `/main` | Procedural OSM (elevation + Street View + OSM meshes) | `Procedural_OSM_Pipeline/` |
-| `/main/using-cesium-map` *(current)* | Cesium photogrammetry + `RoadDrivingProxy` | `Cesium_Photogrammetry_Pipeline/` |
-
-Switch branches in **Unity → Version Control → Branches**, or run `cm switch br:/main` / `cm switch br:/main/using-cesium-map` before capturing demo media.
+This repository contains the **C# pipeline scripts** and **demo media**. The full Unity project (scenes, HDRP assets, Cesium configuration, Perception labelers) is maintained locally in Unity Version Control (Plastic SCM) under `RealSceneGen`.
 
 ---
 
 ## Demo
 
-### Cesium Photogrammetry Pipeline (`/main/using-cesium-map`)
+### Cesium Photogrammetry Pipeline
 
-| Chase camera over photorealistic 3D tiles | Ego (sensor) camera viewpoint |
+Branch: `/main/using-cesium-map` · Location: Karlsruhe, Germany (~48.89°N, 8.69°E)
+
+| Overview |
+|---|
+| ![Procedural overview](docs/demo/scene-overview.png) |
+
+| Chase camera | Ego camera |
 |---|---|
 | ![Chase camera](docs/demo/chasecamera.png) | ![Ego camera](docs/demo/egocam.png) |
 
-Karlsruhe region (~48.89°N, 8.69°E). **WASD** to drive; **C** to toggle chase / ego.
+**RoadDrivingProxy** *(in progress)* — OSM road vectors fused onto Cesium terrain via height raycasting. Driving physics and mesh refinement are still being tuned.
 
-<!-- Add when captured:
-| Road proxy debug mesh | Driving recording |
+| Road proxy debug mesh *(in progress)* |
+|---|
+| ![Road proxy — work in progress](docs/demo/cesium-proxy-debug.png) |
+
+|Driving recording |
+|---|
+| *`docs/demo/cesium-driving.mp4` or GIF* |
+
+Controls: **WASD** to drive · **C** to toggle chase / ego camera
+
+### Procedural OSM Pipeline
+
+Branch: `/main` · Location: Paris, France (~48.86°N, 2.29°E)
+
+| Overview |   |
 |---|---|
-| ![Proxy debug](docs/demo/cesium-proxy-debug.png) | [Demo video](docs/demo/cesium-driving.mp4) |
--->
+| ![Procedural overview](docs/demo/procedural-overview1.png) | ![Procedural overview1](docs/demo/procedural-overview.png) |
 
-### Procedural OSM Pipeline (`/main`)
+| Roads and terrain |
+|---|
+|![Procedural roads](docs/demo/procedural-roads.png) |
 
-<!-- Add your screenshots after switching to br:/main in Unity:
-| Procedural terrain + buildings | Street View facades / roads |
+| buildings |
+|---|
+| ![Procedural buildings](docs/demo/procedural-buildings.png) |
+
+| Driving recording |
+|---|
+| *`docs/demo/procedural-walkthrough.mp4` or GIF* |
+
+Terrain, buildings, and roads are generated at runtime from elevation grids, Street View imagery, and Overpass OSM queries. Controls: **WASD** to move the agent.
+
+
+### Sensor capture — Unity Perception (Solo)
+
+Ego-camera recordings from the Cesium branch using **Unity Perception** → Solo dataset format. Example local output: `solo_2/sequence.0` (73 frames, 1920×1080).
+
+| RGB | Semantic segmentation |
 |---|---|
-| ![Procedural overview](docs/demo/procedural-overview.png) | ![Procedural streets](docs/demo/procedural-roads.png) |
--->
+| ![Perception RGB](docs/demo/perception-rgb.png) | ![Perception segmentation](docs/demo/perception-segmentation.png) |
 
-_Paris area (~48.86°N, 2.29°E). WASD to move agent. Terrain, buildings, and roads are generated at runtime from Google Elevation, Street View, and Overpass OSM._
+**Currently exported per frame**
 
-See [docs/demo/README.md](docs/demo/README.md) for capture steps per branch.
+| Output | Format | Status |
+|--------|--------|--------|
+| RGB camera | PNG (1920×1080) | Recording |
+| Depth | EXR (32-bit, metres) | Recording |
+| Semantic segmentation | PNG | Recording — label config: `car` only so far |
+| 3D bounding boxes | JSON (Solo) | Labeler active |
+| Frame metadata | `stepN.frame_data.json` | Camera pose, timestamp, annotation refs, see example file :  [docs/demo/step700.frame_data.json](docs/demo/step700.frame_data.json)|
 
 ---
 
-## Scripts-only vs full Unity project
+## Repository layout
 
-| Upload to GitHub | Keep local (Plastic SCM / Unity) |
-|---|---|
-| `.cs` pipeline scripts | `Library/`, `Temp/`, `Logs/` |
-| `README.md`, `docs/demo/` screenshots | HDRP render pipeline assets |
-| Architecture diagrams | `OutdoorsScene.unity` (contains Inspector-serialized API keys) |
-| `.gitignore` | Cesium ion / Google API keys (set in Inspector only) |
-| | Unity Perception labeler configs, Solo dataset output |
+| Plastic SCM branch (local) | Pipeline | Scripts in this repo |
+|---|---|---|
+| `/main` | Procedural OSM | `Procedural_OSM_Pipeline/` |
+| `/main/using-cesium-map` | Cesium photogrammetry | `Cesium_Photogrammetry_Pipeline/` |
 
-**API keys:** Setting a key in the Unity Inspector **does** write it into `.unity` scene YAML. That is why keys belong in your local project only, not in a public full-project upload. This scripts-only repo uses placeholders (`YOUR_API_KEY_HERE`, `YOUR_GOOGLE_API_KEY`) in code comments and setup notes.
+```
+Geospatial-Synthetic-Data-Generation/
+├── README.md
+├── docs/demo/                        # Screenshots and recordings
+├── Procedural_OSM_Pipeline/          # 7 scripts
+└── Cesium_Photogrammetry_Pipeline/   # 6 scripts
+```
 
 ---
 
 ## Overview
 
-Geospatial ML platforms need reliable preprocessing: ingest heterogeneous sources, tile them consistently, transform coordinates correctly, and produce downstream-ready outputs.
-
-This project prototypes that in simulation. The agent's position is tracked in **WGS-84 GPS**, and the environment is either **reconstructed from APIs and OSM vector data** (procedural pipeline) or **streamed from photogrammetric 3D Tiles with OSM road fusion** (Cesium pipeline). Both use **event-driven, tile-based processing** with queueing, stale-response guards, and retry logic.
+Both pipelines track agent position in **WGS-84** and rebuild the surrounding world in **50 m tiles** as the agent moves. Processing is **event-driven**: fetch stages emit results that downstream mesh builders consume, with queueing, stale-response guards, and retry logic where APIs can lag or fail.
 
 | Pipeline | Default coordinates | Location |
 |---|---|---|
-| Procedural OSM | 48.8584, 2.2945 | Paris (Eiffel Tower area) |
-| Cesium Photogrammetry | 48.893697, 8.694218 | Karlsruhe region, Germany |
+| Procedural OSM | 48.8584, 2.2945 | Paris |
+| Cesium Photogrammetry | 48.893697, 8.694218 | Karlsruhe region |
 
 ---
 
-## Two Approaches Compared
+## Two approaches compared
 
-| | Procedural OSM Pipeline | Cesium Photogrammetry Pipeline |
+| | Procedural OSM | Cesium Photogrammetry |
 |---|---|---|
-| **Data source** | Google Elevation + Street View, Overpass/OSM | Google Photorealistic 3D Tiles + Overpass/OSM roads |
-| **World generation** | Runtime mesh from API responses | Streamed photogrammetry + vector-to-surface fusion |
-| **Visual fidelity** | Stylized procedural geometry | Photorealistic real-world geometry |
-| **Geospatial math** | Manual WGS-84 / Haversine in `GPSTracker` | `CesiumGlobeAnchor` + ellipsoid raycast height sampling |
-| **Agent control** | `AgentMover` (keyboard, terrain-snapped) | `VehicleController` (rigidbody, proxy/Cesium fallback) |
-| **Output products** | Terrain, buildings, road meshes, facade textures | Drivable road proxy deck, perception camera frames |
-| **Scripts in this repo** | 7 | 6 |
+| **Data sources** | Google Elevation, Street View, Overpass/OSM | Google Photorealistic 3D Tiles, Overpass/OSM roads |
+| **World generation** | Runtime meshes from API responses | Streamed photogrammetry + vector-to-surface fusion |
+| **Visual style** | Procedural / stylized geometry | Photorealistic real-world geometry |
+| **Coordinates** | Manual WGS-84 / Haversine (`GPSTracker`) | `CesiumGlobeAnchor` + ellipsoid raycasts |
+| **Agent** | `AgentMover` - keyboard, terrain-snapped | `VehicleController` - rigidbody, proxy/Cesium fallback |
+| **Outputs** | Terrain, buildings, roads, facade textures | Road proxy deck, camera capture frames |
 
 ---
 
 ## Architecture
 
-### Cesium Photogrammetry Pipeline (current focus)
+### Cesium Photogrammetry Pipeline
 
 ```mermaid
 flowchart TD
-    GPSTracker[GPSTracker WGS84 tiles] --> OSM[OSM Overpass API]
+    GPSTracker[GPSTracker] --> OSM[OSM Overpass API]
     GPSTracker --> Cesium[Google 3D Tiles via Cesium]
-    OSM --> Proxy[RoadDrivingProxy height raycast + mesh]
+    OSM --> Proxy[RoadDrivingProxy]
     Cesium --> Proxy
     Proxy --> Vehicle[VehicleController]
     Vehicle --> Ego[EgoCameraController]
-    Ego --> Perc[Unity PerceptionCamera - WIP export]
+    Ego --> Perc[Unity PerceptionCamera]
     Chase[ChaseCameraController] --> Ego
-    GPSTracker --> TileFetcher[TileFetcher elevation/SV - planned consumer]
+    GPSTracker --> TileFetcher[TileFetcher]
 ```
 
-**Key behaviors**
-
-- `RoadDrivingProxy` fetches OSM highways, subdivides segments on grade, raycasts onto Cesium colliders for height, and builds an invisible drivable deck (optional green debug mesh).
-- `VehicleController` spawns on proxy when ready; falls back to Cesium photogrammetry colliders during tile streaming.
-- `EgoCameraController` renders to HDRP `RenderTexture` for background capture; reflection bypass prevents Perception blit from conflicting with chase camera.
-- `ChaseCameraController` toggles chase ↔ ego view (`C` key in full project).
+- **`RoadDrivingProxy`** - fetches OSM highways, subdivides on grade, raycasts heights onto Cesium colliders, builds a drivable proxy mesh (optional debug overlay).
+- **`VehicleController`** - physics driving with spawn-on-proxy and Cesium collider fallback during tile streaming.
+- **`EgoCameraController`** - HDRP `RenderTexture` capture path with Unity Perception integration; chase/ego toggle via **`ChaseCameraController`**.
 
 ### Procedural OSM Pipeline
 
@@ -129,70 +155,92 @@ flowchart TD
     BuildingGenerator --> RoadNetworkRenderer
 ```
 
-See script tables below for full event chain.
+Each new tile triggers elevation and Street View fetch, terrain rebuild, OSM building extrusion, and road mesh generation in sequence.
 
 ---
 
-## What's working vs planned
+## Roadmap
+
+Longer-term direction for the full `RealSceneGen` project. Items marked **in progress** are partially implemented; **planned** will follow once the core environment and capture paths are stable.
+
+### Environment & geometry
+
+| Item | Status | Notes |
+|------|--------|-------|
+| Procedural OSM pipeline (terrain, buildings, roads) | Done | `/main` branch |
+| Cesium photogrammetry streaming | Done | `/main/using-cesium-map` |
+| `RoadDrivingProxy` — vector-to-surface road fusion | **In progress** | OSM + Cesium height raycast; mesh refinement and driving stability ongoing |
+| Cesium branch `TileFetcher` consumer | Planned | Elevation / Street View fetch exists; not wired to scene yet |
+| Traffic vehicles on OSM road graph | Planned | Waypoint-following AI |
+| Pedestrians (NavMesh) | Planned | |
+| Road signs, trees, street furniture from OSM | Planned | |
+
+### Sensor simulation
+
+| Item | Status | Notes |
+|------|--------|-------|
+| Ego camera + chase camera | Done | HDRP render path |
+| Unity Perception Solo export (RGB, depth, segmentation) | **In progress** | 73-frame test capture working; bbox needs labeled objects |
+| GNSS from `GPSTracker` / `CesiumGlobeAnchor` | Done | WGS-84 position stream |
+| IMU from rigidbody state | Planned | Acceleration / angular velocity |
+| LiDAR (raycast point cloud) | Planned | |
+| Radar (raycast velocity) | Planned | |
+
+### Data export & tooling
+
+| Item | Status | Notes |
+|------|--------|-------|
+| nuScenes-compatible exporter | Planned | JSON scene tokens, images, point clouds |
+| KITTI export (secondary) | Planned | |
+| `validate.py` — export quality checks | Planned | Python CLI for format / temporal / geometric consistency |
+| ML training loop (domain gap, detection models) | Planned | Optional later phase |
+| ROS2 topic publishing | Planned | Optional |
+
+### Project status (summary)
 
 | Component | Status |
 |-----------|--------|
-| Cesium 3D Tiles streaming + WGS-84 anchoring | Working |
-| OSM road fetch + `RoadDrivingProxy` height fusion | Working - WIP refinement |
-| Vehicle driving + chase / ego cameras | Working |
-| Unity Perception wiring (depth, segmentation, bbox labelers) | Wired in local project - export WIP |
-| LiDAR simulation | **Not in this repo** (professional experience at understand.ai) |
-| Python `validate.py` CLI | Planned |
-| `TileFetcher` elevation / Street View (Cesium pipeline) | Fetch only - no consumer yet |
+| Procedural terrain, buildings, roads | Done |
+| Cesium 3D Tiles + WGS-84 anchoring | Done |
+| `RoadDrivingProxy` height fusion | **In progress** |
+| Vehicle driving + chase / ego cameras | Done |
+| Unity Perception dataset export | **In progress** | RGB + depth + segmentation recording; bbox labeling next |
+| Multi-sensor suite (LiDAR, IMU, radar) | Planned |
+| nuScenes / KITTI export | Planned |
+| `validate.py` | Planned |
 
 ---
 
-## Perception & sensor data - what to show in portfolio
+## Scripts
 
-| Asset | Show on GitHub? | Notes |
-|-------|-----------------|-------|
-| Chase / ego camera screenshots | **Yes** | Already in `docs/demo/` - proves photorealistic streaming |
-| Perception visualization (depth, segmentation overlay) | **Yes, 1–2 images** | Only if captured from your real local setup; label as "WIP capture pipeline" |
-| Exported Solo dataset / frame sequences | **No** (today) | Large files; enable PerceptionCamera locally first |
-| LiDAR point clouds | **No** | Not implemented here; do not add fake outputs |
-| Full multi-sensor dataset | **No** | Overselling hurts credibility for data-plane roles |
+### `Cesium_Photogrammetry_Pipeline/`
 
-**Recommendation:** Add 1–2 Perception HUD screenshots (depth or segmentation) to `docs/demo/` if you enable `PerceptionCamera` locally and capture during Play mode. Skip LiDAR in this repo for today's application - your LiDAR credibility is on the CV from understand.ai.
-
----
-
-## Script Reference
-
-### `Cesium_Photogrammetry_Pipeline/` (6 scripts)
-
-| Script | Responsibility |
+| Script | Role |
 |---|---|
-| `GPSTracker.cs` | Cesium-backed GPS tracker; fires `OnNewTileEntered` every 50 m |
-| `RoadDrivingProxy.cs` | OSM ingest → Cesium height raycast → drivable proxy mesh + guard rails |
-| `VehicleController.cs` | Rigidbody vehicle, spawn on proxy, Cesium fallback, fall recovery |
-| `EgoCameraController.cs` | Perception sensor camera; HDRP RT capture; Perception blit bypass |
-| `ChaseCameraController.cs` | Chase / ego camera toggle for demo and capture |
-| `TileFetcher.cs` | Elevation grid + Street View fetch (events fired; consumer planned) |
+| `GPSTracker.cs` | GPS tile events every 50 m via `CesiumGlobeAnchor` |
+| `RoadDrivingProxy.cs` | OSM ingest → height raycast → drivable mesh |
+| `VehicleController.cs` | Vehicle physics, spawn, fall recovery |
+| `EgoCameraController.cs` | Ego sensor camera + Perception capture |
+| `ChaseCameraController.cs` | Chase / ego camera toggle |
+| `TileFetcher.cs` | Elevation and Street View API fetch |
 
-### `Procedural_OSM_Pipeline/` (7 scripts)
+### `Procedural_OSM_Pipeline/`
 
-| Script | Responsibility |
+| Script | Role |
 |---|---|
-| `GPSTracker.cs` | Haversine WGS-84 tracking; `GpsToUnity()` helper |
-| `TileFetcher.cs` | Google Elevation + Street View API hub with fetch queue |
-| `TerrainGenerator.cs` | Streaming terrain mesh from elevation grids |
-| `BuildingGenerator.cs` | OSM building footprints → extruded meshes + Street View facades |
-| `RoadNetworkRenderer.cs` | OSM highways → asphalt strips snapped to terrain |
-| `StreetViewRenderer.cs` | Hidden 360° photo ring for facade texturing |
-| `AgentMover.cs` | WASD movement with terrain raycast snapping |
+| `GPSTracker.cs` | WGS-84 tracking and `GpsToUnity()` conversion |
+| `TileFetcher.cs` | Elevation grid + Street View fetch queue |
+| `TerrainGenerator.cs` | Terrain mesh from elevation data |
+| `BuildingGenerator.cs` | OSM footprints → extruded buildings + facades |
+| `RoadNetworkRenderer.cs` | OSM highways → road meshes on terrain |
+| `StreetViewRenderer.cs` | 360° Street View ring for texturing |
+| `AgentMover.cs` | Keyboard movement with terrain snapping |
 
 ---
 
-## Setup Notes
+## Setup
 
-Developed in **Unity 6** (6000.3.7f1) with **HDRP** and **Cesium for Unity**.
-
-### Required packages (full local project)
+Built with **Unity 6** (6000.3.7f1), **HDRP**, and **Cesium for Unity**.
 
 | Package | Used by |
 |---|---|
@@ -201,60 +249,38 @@ Developed in **Unity 6** (6000.3.7f1) with **HDRP** and **Cesium for Unity**.
 | `com.unity.perception` | `EgoCameraController` |
 | Cesium for Unity | Cesium pipeline |
 
-### API keys (local Inspector only - never commit scenes)
+**API keys** (Google Map Tiles, Elevation, Street View) are configured in the Unity Inspector on the local project only - not committed here.
 
-- **Google Map Tiles API** - Cesium photorealistic 3D Tiles URL
-- **Google Elevation + Street View** - `TileFetcher.apiKey` (procedural + Cesium pipelines)
-- **Overpass API** - public, no key
+**Overpass API** is public and requires no key.
 
-### Controls (full project)
 
-- **WASD** - drive / move
-- **C** - toggle chase ↔ ego camera
 
 ---
 
-## Relevance to Data Plane Engineering
+## Design patterns
 
-| Data Plane concern | How this project demonstrates it |
-|---|---|
-| Tiling & streaming | 50 m GPS tiles trigger fetch → transform → rebuild |
-| Vector ingestion | Overpass/OSM for roads and buildings |
-| Raster / 3D ingestion | Elevation grids, photogrammetric 3D Tiles |
-| Coordinate systems | WGS-84, Cesium globe anchoring, ellipsoid raycasts |
-| Pipeline resilience | Fetch queues, stale-response discard, Overpass retries |
-| 3D-ready outputs | Road proxy meshes, building extrusions, perception frames |
+Patterns used across both pipelines:
 
-Production Python/GDAL/FastAPI/PostgreSQL experience is from understand.ai (ETL, validation, MongoDB) - see CV.
+- **Tile-based streaming** - 50 m movement triggers fetch → transform → rebuild
+- **Event-driven stages** - decoupled fetchers and mesh builders via C# events
+- **Coordinate handling** - WGS-84 anchoring, Haversine conversion, ellipsoid raycasts
+- **Resilience** - fetch queues, stale-response discard, Overpass retry logic
+- **Memory-conscious updates** - previous tile geometry destroyed before rebuild
 
 ---
 
-## Repository Structure
+## What is not in this repo
 
-```
-Geospatial-Synthetic-Data-Generation/
-├── README.md
-├── .gitignore
-├── docs/demo/               # Screenshots (no API keys, no datasets)
-├── Procedural_OSM_Pipeline/ # 7 scripts
-└── Cesium_Photogrammetry_Pipeline/  # 6 scripts
-```
-
----
-
-## What Is Not Included
-
-- Full Unity project, scenes, materials, prefabs
-- API keys (configure in local Inspector only)
-- Unity Perception dataset exports or LiDAR simulation
-- `Library/`, `Temp/`, HDRP pipeline assets
+- Full Unity project, scenes, materials, and prefabs
+- API keys or cloud tokens
+- Exported Perception datasets or LiDAR simulation
+- `Library/`, `Temp/`, and other Unity-generated folders
 
 ---
 
 ## Author
 
-**Pruthvi Radadiya** - Software Engineer (Perception & Data Pipelines)
+**Pruthvi Radadiya**
 
 - GitHub: [@Pruthvi-Radadiya](https://github.com/Pruthvi-Radadiya)
 - LinkedIn: [pruthvi-radadiya](https://www.linkedin.com/in/pruthvi-radadiya)
-- Portfolio repo: [Geospatial-Synthetic-Data-Generation](https://github.com/Pruthvi-Radadiya/Geospatial-Synthetic-Data-Generation)
