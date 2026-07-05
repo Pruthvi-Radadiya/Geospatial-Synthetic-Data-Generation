@@ -10,15 +10,44 @@ Portfolio project demonstrating **geospatial data ingestion, tiling, and transfo
 **Full project (local):** `RealSceneGen` in Unity 6 + Plastic SCM  
 **Portfolio repo (public):** https://github.com/Pruthvi-Radadiya/Geospatial-Synthetic-Data-Generation
 
+### Unity Version Control branches (local `RealSceneGen`)
+
+| Plastic SCM branch | Pipeline | Scripts folder in this repo |
+|---|---|---|
+| `/main` | Procedural OSM (elevation + Street View + OSM meshes) | `Procedural_OSM_Pipeline/` |
+| `/main/using-cesium-map` *(current)* | Cesium photogrammetry + `RoadDrivingProxy` | `Cesium_Photogrammetry_Pipeline/` |
+
+Switch branches in **Unity → Version Control → Branches**, or run `cm switch br:/main` / `cm switch br:/main/using-cesium-map` before capturing demo media.
+
 ---
 
 ## Demo
 
-| Chase camera over Cesium photogrammetry | Ego (sensor) camera viewpoint |
+### Cesium Photogrammetry Pipeline (`/main/using-cesium-map`)
+
+| Chase camera over photorealistic 3D tiles | Ego (sensor) camera viewpoint |
 |---|---|
 | ![Chase camera](docs/demo/chasecamera.png) | ![Ego camera](docs/demo/egocam.png) |
 
-Default Cesium location: Karlsruhe region (~48.89°N, 8.69°E). Drive with **WASD**; toggle chase / ego with **C**.
+Karlsruhe region (~48.89°N, 8.69°E). **WASD** to drive; **C** to toggle chase / ego.
+
+<!-- Add when captured:
+| Road proxy debug mesh | Driving recording |
+|---|---|
+| ![Proxy debug](docs/demo/cesium-proxy-debug.png) | [Demo video](docs/demo/cesium-driving.mp4) |
+-->
+
+### Procedural OSM Pipeline (`/main`)
+
+<!-- Add your screenshots after switching to br:/main in Unity:
+| Procedural terrain + buildings | Street View facades / roads |
+|---|---|
+| ![Procedural overview](docs/demo/procedural-overview.png) | ![Procedural streets](docs/demo/procedural-roads.png) |
+-->
+
+_Paris area (~48.86°N, 2.29°E). WASD to move agent. Terrain, buildings, and roads are generated at runtime from Google Elevation, Street View, and Overpass OSM._
+
+See [docs/demo/README.md](docs/demo/README.md) for capture steps per branch.
 
 ---
 
