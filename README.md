@@ -2,10 +2,10 @@
 
 Portfolio project demonstrating **geospatial data ingestion, tiling, and transformation** into simulation-ready 3D environments. Two complementary pipelines show how raw map and imagery sources can be preprocessed at runtime and converted into structured geometry anchored to real-world coordinates.
 
-1. **Procedural OSM Pipeline** — ingests elevation rasters, street-level imagery, and OSM vector data; tiles and transforms them into terrain, buildings, and road meshes.
-2. **Cesium Photogrammetry Pipeline** — streams photorealistic 3D Tiles, fuses OSM road vectors onto terrain via height raycasting, and captures structured camera output for synthetic datasets.
+1. **Procedural OSM Pipeline** - ingests elevation rasters, street-level imagery, and OSM vector data; tiles and transforms them into terrain, buildings, and road meshes.
+2. **Cesium Photogrammetry Pipeline** - streams photorealistic 3D Tiles, fuses OSM road vectors onto terrain via height raycasting, and captures structured camera output for synthetic datasets.
 
-> **Scripts-only repo:** This GitHub repository contains **Unity C# scripts + demo media only**. The full Unity project (scenes, HDRP assets, Cesium tileset wiring, Perception labelers) stays in local Unity Version Control / Plastic SCM. That is intentional — Unity projects are large, scene files serialize Inspector values (including API keys), and recruiters care most about pipeline logic.
+> **Scripts-only repo:** This GitHub repository contains **Unity C# scripts + demo media only**. The full Unity project (scenes, HDRP assets, Cesium tileset wiring, Perception labelers) stays in local Unity Version Control / Plastic SCM. That is intentional - Unity projects are large, scene files serialize Inspector values (including API keys), and recruiters care most about pipeline logic.
 
 **Full project (local):** `RealSceneGen` in Unity 6 + Plastic SCM  
 **Portfolio repo (public):** https://github.com/Pruthvi-Radadiya/Geospatial-Synthetic-Data-Generation
@@ -138,26 +138,26 @@ See script tables below for full event chain.
 | Component | Status |
 |-----------|--------|
 | Cesium 3D Tiles streaming + WGS-84 anchoring | Working |
-| OSM road fetch + `RoadDrivingProxy` height fusion | Working — WIP refinement |
+| OSM road fetch + `RoadDrivingProxy` height fusion | Working - WIP refinement |
 | Vehicle driving + chase / ego cameras | Working |
-| Unity Perception wiring (depth, segmentation, bbox labelers) | Wired in local project — export WIP |
+| Unity Perception wiring (depth, segmentation, bbox labelers) | Wired in local project - export WIP |
 | LiDAR simulation | **Not in this repo** (professional experience at understand.ai) |
 | Python `validate.py` CLI | Planned |
-| `TileFetcher` elevation / Street View (Cesium pipeline) | Fetch only — no consumer yet |
+| `TileFetcher` elevation / Street View (Cesium pipeline) | Fetch only - no consumer yet |
 
 ---
 
-## Perception & sensor data — what to show in portfolio
+## Perception & sensor data - what to show in portfolio
 
 | Asset | Show on GitHub? | Notes |
 |-------|-----------------|-------|
-| Chase / ego camera screenshots | **Yes** | Already in `docs/demo/` — proves photorealistic streaming |
+| Chase / ego camera screenshots | **Yes** | Already in `docs/demo/` - proves photorealistic streaming |
 | Perception visualization (depth, segmentation overlay) | **Yes, 1–2 images** | Only if captured from your real local setup; label as "WIP capture pipeline" |
 | Exported Solo dataset / frame sequences | **No** (today) | Large files; enable PerceptionCamera locally first |
 | LiDAR point clouds | **No** | Not implemented here; do not add fake outputs |
 | Full multi-sensor dataset | **No** | Overselling hurts credibility for data-plane roles |
 
-**Recommendation:** Add 1–2 Perception HUD screenshots (depth or segmentation) to `docs/demo/` if you enable `PerceptionCamera` locally and capture during Play mode. Skip LiDAR in this repo for today's application — your LiDAR credibility is on the CV from understand.ai.
+**Recommendation:** Add 1–2 Perception HUD screenshots (depth or segmentation) to `docs/demo/` if you enable `PerceptionCamera` locally and capture during Play mode. Skip LiDAR in this repo for today's application - your LiDAR credibility is on the CV from understand.ai.
 
 ---
 
@@ -201,16 +201,16 @@ Developed in **Unity 6** (6000.3.7f1) with **HDRP** and **Cesium for Unity**.
 | `com.unity.perception` | `EgoCameraController` |
 | Cesium for Unity | Cesium pipeline |
 
-### API keys (local Inspector only — never commit scenes)
+### API keys (local Inspector only - never commit scenes)
 
-- **Google Map Tiles API** — Cesium photorealistic 3D Tiles URL
-- **Google Elevation + Street View** — `TileFetcher.apiKey` (procedural + Cesium pipelines)
-- **Overpass API** — public, no key
+- **Google Map Tiles API** - Cesium photorealistic 3D Tiles URL
+- **Google Elevation + Street View** - `TileFetcher.apiKey` (procedural + Cesium pipelines)
+- **Overpass API** - public, no key
 
 ### Controls (full project)
 
-- **WASD** — drive / move
-- **C** — toggle chase ↔ ego camera
+- **WASD** - drive / move
+- **C** - toggle chase ↔ ego camera
 
 ---
 
@@ -225,7 +225,7 @@ Developed in **Unity 6** (6000.3.7f1) with **HDRP** and **Cesium for Unity**.
 | Pipeline resilience | Fetch queues, stale-response discard, Overpass retries |
 | 3D-ready outputs | Road proxy meshes, building extrusions, perception frames |
 
-Production Python/GDAL/FastAPI/PostgreSQL experience is from understand.ai (ETL, validation, MongoDB) — see CV.
+Production Python/GDAL/FastAPI/PostgreSQL experience is from understand.ai (ETL, validation, MongoDB) - see CV.
 
 ---
 
@@ -253,7 +253,7 @@ Geospatial-Synthetic-Data-Generation/
 
 ## Author
 
-**Pruthvi Radadiya** — Software Engineer (Perception & Data Pipelines)
+**Pruthvi Radadiya** - Software Engineer (Perception & Data Pipelines)
 
 - GitHub: [@Pruthvi-Radadiya](https://github.com/Pruthvi-Radadiya)
 - LinkedIn: [pruthvi-radadiya](https://www.linkedin.com/in/pruthvi-radadiya)
