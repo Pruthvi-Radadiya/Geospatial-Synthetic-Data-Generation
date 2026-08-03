@@ -33,11 +33,12 @@ Branch: `/main/using-cesium-map` · Location: Karlsruhe, Germany (~48.89°N, 8.6
 
 |Driving recording |
 |---|
-| 
 
-https://github.com/user-attachments/assets/d5515cae-e634-4200-9213-30e69b3ae9af
 
- |
+https://github.com/user-attachments/assets/40c25095-03b2-4c24-8c17-dc81a7b04afd
+
+
+
 
 Controls: **WASD** to drive · **C** to toggle chase / ego camera
 
@@ -59,11 +60,9 @@ Branch: `/main` · Location: Paris, France (~48.86°N, 2.29°E)
 
 | Driving recording |
 |---|
-| 
 
-https://github.com/user-attachments/assets/a9f04818-4bc2-4a36-9213-d41685c87aac
+https://github.com/user-attachments/assets/c6e17345-82ba-42ab-afea-c74e52f783c3
 
- |
 
 Terrain, buildings, and roads are generated at runtime from elevation grids, Street View imagery, and Overpass OSM queries. Controls: **WASD** to move the agent.
 
