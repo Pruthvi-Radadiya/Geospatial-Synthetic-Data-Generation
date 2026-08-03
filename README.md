@@ -1,6 +1,6 @@
 # Geospatial Synthetic Data Generation
 
-An independent project exploring how **real-world geospatial data** can be ingested, tiled, and transformed into **simulation-ready 3D environments** in Unity — with a longer-term goal of generating and validating **multi-sensor synthetic datasets** for autonomous driving research.
+An independent project exploring how **real-world geospatial data** can be ingested, tiled, and transformed into **simulation-ready 3D environments** in Unity - with a longer-term goal of generating and validating **multi-sensor synthetic datasets** for autonomous driving research.
 
 Two complementary pipelines are implemented as separate development branches:
 
@@ -25,11 +25,11 @@ Branch: `/main/using-cesium-map` · Location: Karlsruhe, Germany (~48.89°N, 8.6
 |---|---|
 | ![Chase camera](docs/demo/chasecamera.png) | ![Ego camera](docs/demo/egocam.png) |
 
-**RoadDrivingProxy** *(in progress)* — OSM road vectors fused onto Cesium terrain via height raycasting. Driving physics and mesh refinement are still being tuned.
+**RoadDrivingProxy** *(in progress)* - OSM road vectors fused onto Cesium terrain via height raycasting. Driving physics and mesh refinement are still being tuned.
 
 | Road proxy debug mesh *(in progress)* |
 |---|
-| ![Road proxy — work in progress](docs/demo/cesium-proxy-debug.png) |
+| ![Road proxy - work in progress](docs/demo/cesium-proxy-debug.png) |
 
 |Driving recording |
 |---|
@@ -60,7 +60,7 @@ Branch: `/main` · Location: Paris, France (~48.86°N, 2.29°E)
 Terrain, buildings, and roads are generated at runtime from elevation grids, Street View imagery, and Overpass OSM queries. Controls: **WASD** to move the agent.
 
 
-### Sensor capture — Unity Perception (Solo)
+### Sensor capture - Unity Perception (Solo)
 
 Ego-camera recordings from the Cesium branch using **Unity Perception** → Solo dataset format. Example local output: `solo_2/sequence.0` (73 frames, 1920×1080).
 
@@ -74,7 +74,7 @@ Ego-camera recordings from the Cesium branch using **Unity Perception** → Solo
 |--------|--------|--------|
 | RGB camera | PNG (1920×1080) | Recording |
 | Depth | EXR (32-bit, metres) | Recording |
-| Semantic segmentation | PNG | Recording — label config: `car` only so far |
+| Semantic segmentation | PNG | Recording - label config: `car` only so far |
 | 3D bounding boxes | JSON (Solo) | Labeler active |
 | Frame metadata | `stepN.frame_data.json` | Camera pose, timestamp, annotation refs, see example file :  [docs/demo/step700.frame_data.json](docs/demo/step700.frame_data.json)|
 
@@ -169,7 +169,7 @@ Longer-term direction for the full `RealSceneGen` project. Items marked **in pro
 |------|--------|-------|
 | Procedural OSM pipeline (terrain, buildings, roads) | Done | `/main` branch |
 | Cesium photogrammetry streaming | Done | `/main/using-cesium-map` |
-| `RoadDrivingProxy` — vector-to-surface road fusion | **In progress** | OSM + Cesium height raycast; mesh refinement and driving stability ongoing |
+| `RoadDrivingProxy` - vector-to-surface road fusion | **In progress** | OSM + Cesium height raycast; mesh refinement and driving stability ongoing |
 | Cesium branch `TileFetcher` consumer | Planned | Elevation / Street View fetch exists; not wired to scene yet |
 | Traffic vehicles on OSM road graph | Planned | Waypoint-following AI |
 | Pedestrians (NavMesh) | Planned | |
@@ -192,7 +192,7 @@ Longer-term direction for the full `RealSceneGen` project. Items marked **in pro
 |------|--------|-------|
 | nuScenes-compatible exporter | Planned | JSON scene tokens, images, point clouds |
 | KITTI export (secondary) | Planned | |
-| `validate.py` — export quality checks | Planned | Python CLI for format / temporal / geometric consistency |
+| `validate.py` - export quality checks | Planned | Python CLI for format / temporal / geometric consistency |
 | ML training loop (domain gap, detection models) | Planned | Optional later phase |
 | ROS2 topic publishing | Planned | Optional |
 
